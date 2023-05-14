@@ -2,6 +2,7 @@ package com.alura.alurabank.controller;
 
 import com.alura.alurabank.dominio.ContaCorrente;
 import com.alura.alurabank.dominio.Correntista;
+import com.alura.alurabank.dominio.MovimentacaoDeConta;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +31,8 @@ public class ContaCorrenteController {
     }
 
     @PutMapping
-    public void movimentarConta(){
+    public ResponseEntity<MovimentacaoDeConta> movimentarConta(@RequestBody MovimentacaoDeConta movimentacaoDeConta){
+        return ResponseEntity.ok(movimentacaoDeConta);
 
     }
 }
@@ -51,4 +53,6 @@ e posso mostrar no body as informações da conta que foi criada (passei os para
   '{"banco":"333","agencia":"4444","numero":"1111"}'
   DELETE: curl -i -X DELETE http://localhost:8080/contas -H "Content-type: application/json" -d
   '{"banco":"333","agencia":"4444","numero":"1111"}'
+  PUT: curl -i -X PUT http://localhost:8080/contas -H "Content-type: application/json" -d
+  '{"valor":"10.00", "operacao":"SAQUE", "contaCorrente": {"banco":"333","agencia":"4444","numero":"1111"}}'
  */
