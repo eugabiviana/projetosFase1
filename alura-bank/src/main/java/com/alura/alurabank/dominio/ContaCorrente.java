@@ -17,4 +17,7 @@ public class ContaCorrente {
         this.numero = numero;
     }
 
+    public ContaCorrente() {
+
+    }
 }
