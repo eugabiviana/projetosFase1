@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
 import java.util.Random;
 
 @RestController
@@ -49,11 +50,22 @@ public class ContaCorrenteController {
 
     @PutMapping
     public ResponseEntity<String> movimentarConta(@RequestBody MovimentacaoDeConta movimentacaoDeConta){
-        if(movimentacaoDeConta.obterNumeroConta() % 2 == 0){
-            return ResponseEntity.badRequest().body("Conta corrente não existe!");
-        }
-        return ResponseEntity.ok("Movimentação realizada com sucesso!");
+//        if(movimentacaoDeConta.obterNumeroConta() % 2 == 0){
+//            return ResponseEntity.badRequest().body("Conta corrente não existe!");
+//        }
+        Optional<ContaCorrente> opContaCorrente =
+                contaCorrenteRepository.buscar(movimentacaoDeConta.getBanco(),
+                movimentacaoDeConta.getAgencia(),
+                movimentacaoDeConta.getNumero());
 
+        if (opContaCorrente.isEmpty()){
+            return ResponseEntity.badRequest().body("Conta corrente não existe!");
+        } else {
+            ContaCorrente contaCorrente = opContaCorrente.get();
+            movimentacaoDeConta.executarEm(contaCorrente);
+            contaCorrenteRepository.salvar(contaCorrente);
+            return ResponseEntity.ok("Movimentação realizada com sucesso!");
+        }
     }
 }
 

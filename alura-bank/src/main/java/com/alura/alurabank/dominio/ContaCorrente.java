@@ -43,6 +43,22 @@ public class ContaCorrente {
     public BigDecimal lersaldo() {
         return saldo;
     }
+
+    public void executar( Operacao operacao, BigDecimal valor){
+        saldo = operacao.executar(saldo, valor);
+    }
+
+    public String getBanco() {
+        return banco;
+    }
+
+    public String getAgencia() {
+        return agencia;
+    }
+
+    public String getNumero() {
+        return numero;
+    }
 }
 
 /* COMENTÁRIOS:

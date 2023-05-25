@@ -11,10 +11,27 @@ public class MovimentacaoDeConta {
     @JsonProperty
     private BigDecimal valor;
     @JsonProperty
-    private Operacao operacao;
+    private int operacao;
 
     public int obterNumeroConta(){
 
-        return Integer.parseInt(numero);
+        return contaCorrente.obterNumeroConta();
+    }
+
+    public void executarEm(ContaCorrente contaCorrente){
+        Operacao operacao = Operacao.values()[this.operacao];
+        contaCorrente.executar(operacao,valor);
+    }
+
+    public String getBanco() {
+        return contaCorrente.getBanco();
+    }
+
+    public String getAgencia() {
+        return contaCorrente.getAgencia();
+    }
+
+    public String getNumero() {
+        return contaCorrente.getNumero();
     }
 }
