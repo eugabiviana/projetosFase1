@@ -23,7 +23,12 @@ public class ContaCorrenteController {
             @RequestParam(name = "banco") String banco,
             @RequestParam(name = "agencia") String agencia,
             @RequestParam(name = "numero") String numero){
-        return String.format("Banco: %s, Agencia: %s, Numero: %s. Saldo: R$1300,00", banco, agencia, numero);
+
+        ContaCorrente contaCorrente =
+                contaCorrenteRepository.buscar(banco, agencia, numero)
+                        .orElse(new ContaCorrente());
+
+        return String.format("Banco: %s, Agencia: %s, Numero: %s. Saldo: %s", banco, agencia, numero, contaCorrente.lersaldo());
     }
 
     @PostMapping
@@ -43,8 +48,11 @@ public class ContaCorrenteController {
     }
 
     @PutMapping
-    public ResponseEntity<MovimentacaoDeConta> movimentarConta(@RequestBody MovimentacaoDeConta movimentacaoDeConta){
-        return ResponseEntity.ok(movimentacaoDeConta);
+    public ResponseEntity<String> movimentarConta(@RequestBody MovimentacaoDeConta movimentacaoDeConta){
+        if(movimentacaoDeConta.obterNumeroConta() % 2 == 0){
+            return ResponseEntity.badRequest().body("Conta corrente não existe!");
+        }
+        return ResponseEntity.ok("Movimentação realizada com sucesso!");
 
     }
 }
@@ -67,4 +75,5 @@ e posso mostrar no body as informações da conta que foi criada (passei os para
   '{"banco":"333","agencia":"4444","numero":"1111"}'
   PUT: curl -i -X PUT http://localhost:8080/contas -H "Content-type: application/json" -d
   '{"valor":"10.00", "operacao":"SAQUE", "contaCorrente": {"banco":"333","agencia":"4444","numero":"1111"}}'
+  - orElse no Get: Se não localizar a conta, crio uma nova com o saldo = zero (ver ContaCorrente);
  */

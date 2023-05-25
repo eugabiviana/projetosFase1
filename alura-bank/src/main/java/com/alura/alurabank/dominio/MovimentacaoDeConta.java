@@ -12,4 +12,9 @@ public class MovimentacaoDeConta {
     private BigDecimal valor;
     @JsonProperty
     private Operacao operacao;
+
+    public int obterNumeroConta(){
+
+        return Integer.parseInt(numero);
+    }
 }
