@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 public class ContaCorrente {
 
@@ -46,6 +47,19 @@ public class ContaCorrente {
 
     public void executar( Operacao operacao, BigDecimal valor){
         saldo = operacao.executar(saldo, valor);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ContaCorrente that = (ContaCorrente) o;
+        return Objects.equals(banco, that.banco) && Objects.equals(agencia, that.agencia) && Objects.equals(numero, that.numero);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(banco, agencia, numero);
     }
 
     public String getBanco() {

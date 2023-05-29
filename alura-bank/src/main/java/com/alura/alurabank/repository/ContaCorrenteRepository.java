@@ -23,6 +23,10 @@ public class ContaCorrenteRepository {
                 .filter(contaCorrente -> contaCorrente.identificadaPor(banco, agencia, numero))
                 .findFirst();
     }
+
+    public void fechar(ContaCorrente contaCorrente) {
+        contas.remove(contaCorrente);
+    }
 }
 
 /* COMENTÁRIOS:

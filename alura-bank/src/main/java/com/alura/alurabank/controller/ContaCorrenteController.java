@@ -29,7 +29,8 @@ public class ContaCorrenteController {
                 contaCorrenteRepository.buscar(banco, agencia, numero)
                         .orElse(new ContaCorrente());
 
-        return String.format("Banco: %s, Agencia: %s, Numero: %s. Saldo: %s", banco, agencia, numero, contaCorrente.lersaldo());
+        return String.format("Banco: %s, Agencia: %s, Numero: %s. Saldo: %s",
+                banco, agencia, numero, contaCorrente.lersaldo());
     }
 
     @PostMapping
@@ -45,14 +46,12 @@ public class ContaCorrenteController {
 
     @DeleteMapping
     public String fecharConta(@RequestBody ContaCorrente contaCorrente){
+        contaCorrenteRepository.fechar(contaCorrente);
         return "Conta fechada com sucesso!";
     }
 
     @PutMapping
     public ResponseEntity<String> movimentarConta(@RequestBody MovimentacaoDeConta movimentacaoDeConta){
-//        if(movimentacaoDeConta.obterNumeroConta() % 2 == 0){
-//            return ResponseEntity.badRequest().body("Conta corrente não existe!");
-//        }
         Optional<ContaCorrente> opContaCorrente =
                 contaCorrenteRepository.buscar(movimentacaoDeConta.getBanco(),
                 movimentacaoDeConta.getAgencia(),
