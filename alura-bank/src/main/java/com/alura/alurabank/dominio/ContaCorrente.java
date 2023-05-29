@@ -16,7 +16,7 @@ public class ContaCorrente {
     private String numero;
     @JsonProperty
     private BigDecimal saldo;
-    @JsonIgnore
+    @JsonProperty
     private Correntista correntista;
 
     public ContaCorrente(String banco, String agencia, String numero, Correntista correntista){
