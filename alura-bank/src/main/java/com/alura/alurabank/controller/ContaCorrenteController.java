@@ -1,5 +1,6 @@
 package com.alura.alurabank.controller;
 
+import com.alura.alurabank.controller.form.CorrentistaForm;
 import com.alura.alurabank.dominio.ContaCorrente;
 import com.alura.alurabank.dominio.Correntista;
 import com.alura.alurabank.dominio.MovimentacaoDeConta;
@@ -34,12 +35,13 @@ public class ContaCorrenteController {
     }
 
     @PostMapping
-    public ResponseEntity<ContaCorrente> criarNovaConta(@RequestBody Correntista correntista){
+    public ResponseEntity<ContaCorrente> criarNovaConta(@RequestBody CorrentistaForm correntistaForm){
+        Correntista correntista= correntistaForm.toCorrentista();
         String banco = "111";
         String agencia = "2222";
         String numero = Integer.toString(new Random().nextInt(Integer.MAX_VALUE)); //<- para criar números aleatórios.
 
-        ContaCorrente contaCorrente= new ContaCorrente(banco, agencia, numero, correntista);
+        ContaCorrente contaCorrente = new ContaCorrente(banco, agencia, numero, correntista);
         contaCorrenteRepository.salvar(contaCorrente);
         return ResponseEntity.status(HttpStatus.CREATED).body(contaCorrente);
     }
