@@ -1,6 +1,6 @@
 package com.alura.alurabank.controller;
 
-import com.alura.alurabank.config.JMapperBean;
+//import com.alura.alurabank.config.JMapperBean;
 import com.alura.alurabank.controller.form.ContaCorrenteForm;
 import com.alura.alurabank.controller.form.CorrentistaForm;
 import com.alura.alurabank.dominio.ContaCorrente;
@@ -22,8 +22,8 @@ public class ContaCorrenteController {
     @Autowired
     private ContaCorrenteRepository contaCorrenteRepository;
 
-    @Autowired
-    private JMapperBean<ContaCorrente, ContaCorrenteForm> contaCorrenteMapper;
+//    @Autowired
+//    private JMapperBean<ContaCorrente, ContaCorrenteForm> contaCorrenteMapper;
     @GetMapping
     public String consultarSaldo(
             @RequestParam(name = "banco") String banco,
@@ -50,12 +50,12 @@ public class ContaCorrenteController {
         return ResponseEntity.status(HttpStatus.CREATED).body(contaCorrente);
     }
 
-    @DeleteMapping
-    public String fecharConta(@RequestBody ContaCorrenteForm contaCorrenteForm){
-        ContaCorrente contaCorrente = contaCorrenteMapper.contaCorrenteMapper().getDestination(contaCorrenteForm);
-        contaCorrenteRepository.fechar(contaCorrente);
-        return "Conta fechada com sucesso!";
-    }
+//    @DeleteMapping
+//    public String fecharConta(@RequestBody ContaCorrenteForm contaCorrenteForm){
+//        ContaCorrente contaCorrente = contaCorrenteMapper.contaCorrenteMapper().getDestination(contaCorrenteForm);
+//        contaCorrenteRepository.fechar(contaCorrente);
+//        return "Conta fechada com sucesso!";
+//    }
 
     @PutMapping
     public ResponseEntity<String> movimentarConta(@RequestBody MovimentacaoDeConta movimentacaoDeConta){

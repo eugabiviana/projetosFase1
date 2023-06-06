@@ -2,16 +2,24 @@ package com.alura.alurabank.dominio;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.Objects;
 
 public class ContaCorrente {
 
+    @Setter
+    @Getter
     @JsonProperty
     private String banco;
+    @Setter
+    @Getter
     @JsonProperty
     private String agencia;
+    @Setter
+    @Getter
     @JsonProperty
     private String numero;
     @JsonProperty
@@ -62,29 +70,6 @@ public class ContaCorrente {
         return Objects.hash(banco, agencia, numero);
     }
 
-    public String getBanco() {
-        return banco;
-    }
-
-    public String getAgencia() {
-        return agencia;
-    }
-
-    public String getNumero() {
-        return numero;
-    }
-
-    public void setBanco(String banco) {
-        this.banco = banco;
-    }
-
-    public void setAgencia(String agencia) {
-        this.agencia = agencia;
-    }
-
-    public void setNumero(String numero) {
-        this.numero = numero;
-    }
 }
 
 /* COMENTÁRIOS:
