@@ -7,13 +7,19 @@ import com.alura.alurabank.dominio.ContaCorrente;
 import com.alura.alurabank.dominio.Correntista;
 import com.alura.alurabank.dominio.MovimentacaoDeConta;
 import com.alura.alurabank.repository.ContaCorrenteRepository;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Path;
+import jakarta.validation.Validation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/contas")
@@ -39,7 +45,15 @@ public class ContaCorrenteController {
     }
 
     @PostMapping
-    public ResponseEntity<ContaCorrente> criarNovaConta(@RequestBody CorrentistaForm correntistaForm){
+    public ResponseEntity criarNovaConta(@RequestBody CorrentistaForm correntistaForm){
+        Set<ConstraintViolation<CorrentistaForm>> violacoes =
+                Validation.buildDefaultValidatorFactory().getValidator().validate(correntistaForm);
+        Map<Path, String> violacoesToMap = violacoes
+                .stream()
+                .collect(Collectors.toMap(violacao -> violacao.getPropertyPath(), violacao -> violacao.getMessage()));
+        if (!violacoesToMap.isEmpty()){
+            return ResponseEntity.badRequest().body(violacoesToMap);
+        }
         Correntista correntista= correntistaForm.toCorrentista();
         String banco = "111";
         String agencia = "2222";
