@@ -15,11 +15,14 @@ public class CorrentistaForm {
     @NotNull (message = "O CPF é um campo obrigatório!")
     private String cpf;
     @JsonProperty
-    @NotNull(message = "O nome do correntista não pode ser nulo!")
-    @NotBlank(message = "O nome do correntista não pode estar em branco!")
+    @NotBlank(message = "O nome do correntista não pode ser nulo e não pode estar em branco!")
     private String nome;
 
     public Correntista toCorrentista(){
         return new Correntista(cpf, nome);
     }
 }
+
+/* COMENTÁRIOS:
+- @NotBlank para STRING funciona como notNull e notBlank! Assim, não preciso usar as duas anotações.
+ */

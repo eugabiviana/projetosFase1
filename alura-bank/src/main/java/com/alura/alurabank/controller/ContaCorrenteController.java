@@ -10,6 +10,7 @@ import com.alura.alurabank.repository.ContaCorrenteRepository;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Path;
 import jakarta.validation.Validation;
+import jakarta.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,9 @@ public class ContaCorrenteController {
 
 //    @Autowired
 //    private JMapperBean<ContaCorrente, ContaCorrenteForm> contaCorrenteMapper;
+
+    @Autowired
+    private Validator validator;
     @GetMapping
     public String consultarSaldo(
             @RequestParam(name = "banco") String banco,
@@ -47,7 +51,7 @@ public class ContaCorrenteController {
     @PostMapping
     public ResponseEntity criarNovaConta(@RequestBody CorrentistaForm correntistaForm){
         Set<ConstraintViolation<CorrentistaForm>> violacoes =
-                Validation.buildDefaultValidatorFactory().getValidator().validate(correntistaForm);
+                validator.validate(correntistaForm);
         Map<Path, String> violacoesToMap = violacoes
                 .stream()
                 .collect(Collectors.toMap(violacao -> violacao.getPropertyPath(), violacao -> violacao.getMessage()));
