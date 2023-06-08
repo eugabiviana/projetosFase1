@@ -50,11 +50,7 @@ public class ContaCorrenteController {
 
     @PostMapping
     public ResponseEntity criarNovaConta(@RequestBody CorrentistaForm correntistaForm){
-        Set<ConstraintViolation<CorrentistaForm>> violacoes =
-                validator.validate(correntistaForm);
-        Map<Path, String> violacoesToMap = violacoes
-                .stream()
-                .collect(Collectors.toMap(violacao -> violacao.getPropertyPath(), violacao -> violacao.getMessage()));
+        Map<Path, String> violacoesToMap = validar(correntistaForm);
         if (!violacoesToMap.isEmpty()){
             return ResponseEntity.badRequest().body(violacoesToMap);
         }
@@ -68,11 +64,25 @@ public class ContaCorrenteController {
         return ResponseEntity.status(HttpStatus.CREATED).body(contaCorrente);
     }
 
+//    Extração de método: para ser genérico e poder ser usado em outras partes da Classe, não apenas no Post.
+    private <T> Map<Path, String> validar(T form) {
+        Set<ConstraintViolation<T>> violacoes =
+                validator.validate(form);
+        Map<Path, String> violacoesToMap = violacoes
+                .stream()
+                .collect(Collectors.toMap(violacao -> violacao.getPropertyPath(), violacao -> violacao.getMessage()));
+        return violacoesToMap;
+    }
+
 //    @DeleteMapping
-//    public String fecharConta(@RequestBody ContaCorrenteForm contaCorrenteForm){
+//    public ResponseEntity fecharConta(@RequestBody ContaCorrenteForm contaCorrenteForm){
+//        Map<Path, String> violacoesToMap = validar(contaCorrenteForm);
+//        if (!violacoesToMap.isEmpty()){
+//            return ResponseEntity.badRequest().body(violacoesToMap);
+//        }
 //        ContaCorrente contaCorrente = contaCorrenteMapper.contaCorrenteMapper().getDestination(contaCorrenteForm);
 //        contaCorrenteRepository.fechar(contaCorrente);
-//        return "Conta fechada com sucesso!";
+//        return ResponseEntity.ok("Conta fechada com sucesso!");
 //    }
 
     @PutMapping
@@ -112,4 +122,5 @@ e posso mostrar no body as informações da conta que foi criada (passei os para
   PUT: curl -i -X PUT http://localhost:8080/contas -H "Content-type: application/json" -d
   '{"valor":"10.00", "operacao":"SAQUE", "contaCorrente": {"banco":"333","agencia":"4444","numero":"1111"}}'
   - orElse no Get: Se não localizar a conta, crio uma nova com o saldo = zero (ver ContaCorrente);
+  - A extração do método foi feita no Post.
  */
